@@ -30,7 +30,6 @@ class RoundWindow(QLabel):
         self.keep_aspect = rospy.get_param("~keep_aspect", True)
 
         screen = Display(':1').screen()
-        print(screen.width_in_pixels, screen.height_in_pixels)
         self.wd=screen.width_in_pixels
         self.ht=screen.height_in_pixels
         self.initUI()
@@ -47,7 +46,6 @@ class RoundWindow(QLabel):
         np_arr = np.fromstring(msg.data, np.uint8)
         sz = (msg.height, msg.width, int(msg.step/msg.width))
         image_pre = np.reshape(np_arr, sz)
-        print(msg.width, msg.height)
         #cv2.imshow("test", image)
         #cv2.waitKey(0)
        
