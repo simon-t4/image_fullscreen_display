@@ -20,6 +20,7 @@ class RoundWindow(QLabel):
         signal.signal(signal.SIGINT, self.sigintHandler)
 
         self.__input_topic = rospy.get_param('~input_topic', '/image_final')
+        self.__display_monitor = rospy.get_param('~display_monitor', 0)
 
         self.wd  = rospy.get_param("~width", 360)
         self.ht = rospy.get_param("~height", 240)
@@ -29,9 +30,15 @@ class RoundWindow(QLabel):
         self.new_roi = False
         self.keep_aspect = rospy.get_param("~keep_aspect", True)
 
-        screen = Display(':1').screen()
-        self.wd=screen.width_in_pixels
-        self.ht=screen.height_in_pixels
+
+        self._monitor = QDesktopWidget().screenGeometry(self.__display_monitor)
+#        self._monitor = QDesktopWidget().screenGeometry(1)
+
+#        screen = Display(':1').screen()
+#        self.wd=screen.width_in_pixels
+#        self.ht=screen.height_in_pixels
+        self.wd = self._monitor.width()
+        self.ht = self._monitor.height()
         self.initUI()
         self.update_im = False
         self.image_sub = rospy.Subscriber(self.__input_topic, Image, self.imageCallback,
@@ -99,6 +106,8 @@ class RoundWindow(QLabel):
             for j in range(self.wd):
                 self.qimage.setPixel(j, i, QtGui.qRgb(i%255,j%255,128))
         self.setPixmap(QtGui.QPixmap.fromImage(self.qimage))
+
+        self.move(self._monitor.left(), self._monitor.top())
         self.showFullScreen()
         self.show()
     
