@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>image_fullscreen_display</name>
+    <version>1.0.0</version>
+    <description>Full Screen Display of Image Topics</description>
+
+    <license>Apache 2.0</license>
+
+    <author  email="simon.thompson@tier4.jp">Simon Thompson</author >
+    <maintainer email="simon.thompson@tier4.jp">Simon Thompson</maintainer>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <exec_depend>rosapi</exec_depend>
+    <exec_depend>rospy</exec_depend>
+    <exec_depend>sensor_msgs</exec_depend>
+
+</package>
