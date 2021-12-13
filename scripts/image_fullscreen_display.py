@@ -100,13 +100,15 @@ class RoundWindow(QLabel):
 
     def initUI(self):
         self.setWindowFlags(Qt.FramelessWindowHint)
-        self.qimage = QImage(self.wd, self.ht, QImage.Format_RGB32)
-        # generate a test image
-        for i in range(self.ht):
-            for j in range(self.wd):
-                self.qimage.setPixel(j, i, QtGui.qRgb(i%255,j%255,128))
-        self.setPixmap(QtGui.QPixmap.fromImage(self.qimage))
+        #self.qimage = QImage(self.wd, self.ht, QImage.Format_RGB32)
 
+        qimage_tmp = QImage();
+        qimage_tmp.load("/home/tier4/ces2022/data/images/tier4_blue.png")
+        #qimage_tmp2 = qimage_tmp.scaled(self.wd, self.ht, Qt.KeepAspectRatio);
+        qimage_tmp2 = qimage_tmp.scaled(self.wd, self.ht);
+        self.qimage = qimage_tmp2.convertToFormat(QImage.Format_RGB32);
+
+        self.setPixmap(QtGui.QPixmap.fromImage(self.qimage));
         self.move(self._monitor.left(), self._monitor.top())
         self.showFullScreen()
         self.show()
