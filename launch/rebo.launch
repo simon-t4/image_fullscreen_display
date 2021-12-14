@@ -1,0 +1,80 @@
+<launch>
+<!--
+    <param name="/use_sim_time" value="true"/>
+ -->
+    <arg name="left_cam_ns" value="/camera/left"/>
+    <arg name="right_cam_ns" value="/camera/right"/>
+    
+    
+    <param name="/use_sim_time" value="true"/>
+    <arg name="left_calibration" value="$(find c1_fusion)/calibration/c1_left_20211122.yaml" />
+    <arg name="right_calibration" value="$(find c1_fusion)/calibration/c1_right_20211122_v2.yaml" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_left_c1_baraja"
+          args="0.2 0.19 0.01 -1.1425 -0.01 -1.594 sensorhead_1_1 left/camera_optical_link"/>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_right_c1_baraja"
+          args="0.2 -0.19 0.01 -2.085 -0.01 -1.594 sensorhead_1_1 right/camera_optical_link"/>
+	  
+    <group ns="$(arg left_cam_ns)">
+      <node pkg="image_proc" type="image_proc" name="image_proc_left"/>
+      
+      <node pkg="pe_camerainfo_publisher" type="pe_calibration_publisher.py" name="camera_info_left" output="screen">
+        <param name="calibration_yaml" value="$(arg left_calibration)" />
+        <param name="input_topic" value="image_raw" />
+      </node>
+      
+      <node pkg="image_transport" type="republish" name="image_decompress_left" 
+          args="compressed in:=image_raw raw out:=image_raw"/>
+
+      <node pkg="pixel_cloud_fusion" type="pixel_cloud_fusion" name="fusion_left">
+          <param name="image_src" value="image_rect_color" />
+          <param name="camera_info_src" value="camera_info" />
+          <param name="points_src" value="/points_concat" />
+      </node>
+    </group>
+
+    <group ns="$(arg right_cam_ns)">
+      <node pkg="image_proc" type="image_proc" name="image_proc_right"/>
+      
+      <node pkg="pe_camerainfo_publisher" type="pe_calibration_publisher.py" name="camera_info_right" output="screen">
+        <param name="calibration_yaml" value="$(arg right_calibration)" />
+        <param name="input_topic" value="image_raw" />
+      </node>
+      
+      <node pkg="image_transport" type="republish" name="image_decompress_right" 
+          args="compressed in:=image_raw raw out:=image_raw"/>
+
+      <node pkg="pixel_cloud_fusion" type="pixel_cloud_fusion" name="fusion_right">
+          <param name="image_src" value="image_rect_color" />
+          <param name="camera_info_src" value="camera_info" />
+          <param name="points_src" value="/points_concat" />
+      </node>
+    </group>
+  
+    <node pkg="points_concat" type="points_concat"
+        name="points_concat" output="screen">
+        <param name="output_frame_id" value="sensorhead_1_1" />
+        <param name="input_topics" value="[/baraja_lidar_1/sensorhead_1_1, /baraja_lidar_1/sensorhead_1_2]" />
+    </node>
+
+   
+  <node pkg="ros_image_transition" type="pe_image_transition.py" name="image_transition_multiplexer" />
+
+<node name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find rviz_cinematographer_gui)/launch/rviz_cinematographer_gui.rviz"/>
+
+<!--     <node pkg="rviz" type="rviz" name="viz_2d" args="-d $(find c1_fusion)/rviz/c1_tier4.rviz" /> -->
+<!--    <node pkg="rviz" type="rviz" name="viz_3d" args="-d $(find c1_fusion)/rviz/c1_fusion.rviz" />-->
+
+  <node name="rviz_cinematographer_gui" pkg="rqt_gui" type="rqt_gui" output="screen" args="-s rviz_cinematographer_gui/RvizCinematographerGUI">
+    <rosparam command="load" file="$(find rviz_cinematographer_gui)/trajectories/c1_test.yaml"/>
+    <param name="start_recorder" value="true"/>
+  </node>
+
+
+  <node pkg="image_fullscreen_display" type="image_fullscreen_display.py" name="image_fullscreen_display" output="screen">
+        <param name="input_topic" value="/image_final" />
+	<param name="display_monitor" value="0" />
+  </node>
+
+</launch>
