@@ -1,7 +1,7 @@
 <launch>
-
+<!--
     <param name="/use_sim_time" value="true"/>
- 
+ -->
     <arg name="left_cam_ns" value="/camera/left"/>
     <arg name="right_cam_ns" value="/camera/right"/>
     
@@ -70,10 +70,10 @@
     <param name="start_recorder" value="true"/>
   </node>
 
-<!--
+
   <node pkg="image_fullscreen_display" type="image_fullscreen_display.py" name="image_fullscreen_display" output="screen">
         <param name="input_topic" value="/image_final" />
-	<param name="display_monitor" value="1" />
+	<param name="display_monitor" value="0" />
   </node>
-    -->
+
 </launch>

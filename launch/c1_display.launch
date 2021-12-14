@@ -43,10 +43,10 @@
     <rosparam command="load" file="$(find rviz_cinematographer_gui)/trajectories/c1_test.yaml"/>
     <param name="start_recorder" value="true"/>
   </node>
-<!--
+
   <node pkg="image_fullscreen_display" type="image_fullscreen_display.py" name="image_fullscreen_display" output="screen">
         <param name="input_topic" value="/image_final" />
-	<param name="display_monitor" value="1" />
+	<param name="display_monitor" value="0" />
   </node>
--->
+
 </launch>
