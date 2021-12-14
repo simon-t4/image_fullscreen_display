@@ -3,7 +3,7 @@
 # Lucas Walter - original author from https://github.com/lucasw/image_pipeline/image_view
 # http://stackoverflow.com/questions/14347163/pyqt-irregularly-shaped-windows-e-g-a-circular-without-a-border-decorations
 
-from Xlib.display import Display
+#from Xlib.display import Display
 import cv2
 import numpy as np
 import rospy
