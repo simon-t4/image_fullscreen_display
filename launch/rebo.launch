@@ -30,7 +30,7 @@
       <node pkg="pixel_cloud_fusion" type="pixel_cloud_fusion" name="fusion_left">
           <param name="image_src" value="image_rect_color" />
           <param name="camera_info_src" value="camera_info" />
-          <param name="points_src" value="/baraja_lidar/hemisphere_2" />
+          <param name="points_src" value="/baraja_lidar/hemisphere_1" />
       </node>
     </group>
 
