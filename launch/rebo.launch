@@ -57,8 +57,8 @@
 
 
     <node name="rviz_cinematographer_gui" pkg="rqt_gui" type="rqt_gui" output="screen" args="-s rviz_cinematographer_gui/RvizCinematographerGUI">
-        <rosparam command="load" file="$(find rviz_cinematographer_gui)/trajectories/c1_test.yaml"/>
-        <param name="start_recorder" value="true"/>
+        <rosparam command="load" file="$(find rviz_cinematographer_gui)/trajectories/rebo_test.yaml"/>
+<!--        <param name="start_recorder" value="true"/> -->
     </node>
 
 

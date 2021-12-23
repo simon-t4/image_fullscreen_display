@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+ 
+<!--
+<script type="text/javascript" src="http://static.robotwebtools.org/EventEmitter2/current/eventemitter2.min.js"></script>
+<script type="text/javascript" src="http://static.robotwebtools.org/roslibjs/current/roslib.min.js"></script> 
+-->
+<script type="text/javascript" src="eventemitter2.min.js"></script>
+<script type="text/javascript" src="roslib.min.js"></script> 
+
+
+<script type="text/javascript" type="text/javascript">
+
+// Connecting to ROS
+// -----------------
+
+  var ros = new ROSLIB.Ros({
+//     url : 'ws://localhost:9090'
+     url : 'ws://10.42.0.1:9090'
+   });
+
+  ros.on('connection', function() {
+      console.log('Connected to websocket server.');
+  });
+  ros.on('error', function(error) {
+      console.log('Error connecting to websocket server: ', error);
+  });
+  
+  ros.on('close', function() {
+      console.log('Connection to websocket server closed.');
+  });
+
+  var setSeq = new ROSLIB.Topic({
+      ros : ros,
+      name : '/display_sequence',
+      messageType : 'ros_image_transition/SetDisplaySequence'
+  });
+
+  var single_rviz_seq = new ROSLIB.Message({
+      sequence_id : 0
+  });
+  var single_depth_seq = new ROSLIB.Message({
+      sequence_id : 3
+  });
+  var single_intensity_seq = new ROSLIB.Message({
+      sequence_id : 2
+  });
+  var sequence_1_seq = new ROSLIB.Message({
+      sequence_id : 1
+  });
+
+
+  function single_view() {
+      setSeq.publish(single_rviz_seq);
+  };
+  function sequence_1() {
+      setSeq.publish(sequence_1_seq);
+  };
+  function single_depth() {
+      setSeq.publish(single_depth_seq);
+  };
+  function single_intensity() {
+      setSeq.publish(single_intensity_seq);
+  };
+
+ var cmdVel = new ROSLIB.Topic({
+      ros : ros,
+      name : '/cmd_vel',
+      messageType : 'geometry_msgs/Twist'
+  });
+
+  var twist = new ROSLIB.Message({
+      linear : {
+          x : 0.1,
+          y : 0.2,
+	  z : 0.3
+      },
+      angular : {
+          x : -0.1,
+	  y : -0.2,
+	  z : -0.3
+      }
+  });
+  cmdVel.publish(twist);
+</script>
+
+<style>
+  .mybutton {
+      background-color: #66CCFF;
+      border: none;
+      color: white;
+      padding: 35px 48px;
+      margin: 22px 2px;
+      text-align: center;
+      display: inline-block;
+      font-size: 48px;
+      width: 98%;     
+  }
+  </style>
+</head>
+
+<body>
+  <h1>Set Image Dislay Sequence for CES Demo</h1>
+  <p> Choose from set sequences </p>
+  <div>
+    <input type="button" class="mybutton" value="Single RViz View" id="btnClick" onClick="single_view();" /> <br>
+    <input type="button" class="mybutton" value="Single Depth View" id="btnClick" onClick="single_depth();" /><br>
+    <input type="button" class="mybutton" value="Single Intensity View" id="btnClick" onClick="single_intensity ();" /><br>
+    <input type="button" class="mybutton" value="Multi View Sequence 1" id="btnClick" onClick="sequence_1();" /><br>
+  </div>
+</body>
+</html>
