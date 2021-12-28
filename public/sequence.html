@@ -9,15 +9,20 @@
 -->
 <script type="text/javascript" src="eventemitter2.min.js"></script>
 <script type="text/javascript" src="roslib.min.js"></script> 
+<script type="text/javascript" src="jquery-3.6.0.js"></script> 
 
 
-<script type="text/javascript" type="text/javascript">
+<script type="text/javascript">
 
 // Connecting to ROS
 // -----------------
 
+
+ 
+  
   var ros = new ROSLIB.Ros({
-//     url : 'ws://localhost:9090'
+//      url : 'ws://localhost:9090'
+//      url : 'ws://192.168.0.13:9090'
      url : 'ws://10.42.0.1:9090'
    });
 
@@ -53,16 +58,44 @@
 
 
   function single_view() {
+      console.log('Pushed single rviz view button.');
       setSeq.publish(single_rviz_seq);
-  };
+  };  
   function sequence_1() {
+      console.log('Pushed multiple sequence button.');
       setSeq.publish(sequence_1_seq);
   };
   function single_depth() {
+      console.log('Pushed single depth button.');
       setSeq.publish(single_depth_seq);
   };
   function single_intensity() {
+      console.log('Pushed single intensity button.');
       setSeq.publish(single_intensity_seq);
+  };
+
+
+  var node_list_data;
+  function list_ros_nodes() {
+      console.log('Pushed list ros nodes button.');
+      $.get('list_ros_nodes.php', function(data)
+	    {
+		node_list_data = data;
+	    });
+      document.getElementsByName("ros_node_list")[0].value=node_list_data;
+
+  };
+  function start_rebo() {
+      console.log('Pushed start REBO button.');
+      $.get('start_rebo.php', function(){});
+  };
+  function stop_rebo() {
+      console.log('Pushed stop REBO button.');
+      $.get('stop_rebo.php', function(){});
+  };
+  function reconnect() {
+      console.log('Pushed reconnect REBO button.');
+      location.reload();
   };
 
  var cmdVel = new ROSLIB.Topic({
@@ -88,27 +121,97 @@
 
 <style>
   .mybutton {
-      background-color: #66CCFF;
+      background-color: #CFE7E8;
       border: none;
       color: white;
       padding: 35px 48px;
-      margin: 22px 2px;
+      margin: 16px 2px;
       text-align: center;
       display: inline-block;
-      font-size: 48px;
+      font-size: 32px;
       width: 98%;     
   }
-  </style>
+
+  .control_button {
+      background-color: #06579E;
+      border: none;
+      color: white;
+      padding: 35px 24px;
+      margin: 16px 2px;
+      text-align: center;
+      display: inline-block;
+      font-size: 32px;
+      width: 24%;     
+  }
+  #imggame {
+      border:  2px solid #EEEEEE;
+      padding: 15px;
+      border-radius: 15px;
+      margin-right: 2%;
+      display:flex;
+  }
+  img{
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:100%;
+}
+.img-wrap{
+  float:left;
+  width:20%;
+  margin-right:2%;
+}
+.desc{
+  float:right;
+  width:75%;
+}
+.desc p{
+  margin-top:0;
+}
+.clear{
+  clear:both;
+}
+</style>
+
 </head>
 
 <body>
-  <h1>Set Image Dislay Sequence for CES Demo</h1>
-  <p> Choose from set sequences </p>
+<div id ="imggame">
+  <div class="image-wrap">
+  <img src="images/T4Logo.png" alt="Tier IV, Inc"
+       style="height:135px;width:135px;">
+  </div>
+  <div class="desc">
+    <p style="margin-left:20px;
+	      margin-top:20px;
+	      background-color:#22A3CD;
+	      font-size:32px;
+	      font-family:sans-serif;
+	      color:white;
+	      padding:35px 35px;">
+     CES 2022 Demo</p>
+  </div>
+</div class="clear"></div>
+</div>
+<!--  <p> Choose from set sequences </p>-->
   <div>
     <input type="button" class="mybutton" value="Single RViz View" id="btnClick" onClick="single_view();" /> <br>
     <input type="button" class="mybutton" value="Single Depth View" id="btnClick" onClick="single_depth();" /><br>
-    <input type="button" class="mybutton" value="Single Intensity View" id="btnClick" onClick="single_intensity ();" /><br>
+    <input type="button" class="mybutton" value="Single Intensity View" id="btnClick" onClick="single_intensity();" /><br>
     <input type="button" class="mybutton" value="Multi View Sequence 1" id="btnClick" onClick="sequence_1();" /><br>
   </div>
+
+    <div>
+    <input type="button" class="control_button" value="Start REBO" id="btnClick" onClick="start_rebo();" /> 
+    <input type="button" class="control_button" value="Stop REBO" id="btnClick" onClick="stop_rebo();" />
+    <input type="button" class="control_button" value="Re-Connect" id="btnClick" onClick="reconnect();" /> 
+    <input type="button" class="control_button" value="List Nodes" id="btnClick" onClick="list_ros_nodes();" /> <br>
+  <form >
+    <textarea rows="5" cols="100" name="ros_node_list"> Running ROS Nodes ...
+	      </textarea> 
+  </form>
+  </div>
+
 </body>
 </html>
+
