@@ -1,8 +1,8 @@
-#~/bin/bash
+#!/bin/bash
 read MESSAGE
 echo "$MESSAGE"
-source /opt/ros/noetic/setup.bash
-source ./devel/setup.bash
+. /opt/ros/noetic/setup.bash
+. devel/setup.bash
 
 rosnode kill image_fullscreen_display
 #rosnode kill rqt_gui
