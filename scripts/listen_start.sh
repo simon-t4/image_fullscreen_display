@@ -1,7 +1,7 @@
 #!/bin/bash
 read MESSAGE
 echo "$MESSAGE"
-cd /home/simonthompson/work/ngss/ces2022/demo/ws
+cd /home/tier4/ces2022/ws
 . /opt/ros/noetic/setup.bash
 . devel/setup.bash
 

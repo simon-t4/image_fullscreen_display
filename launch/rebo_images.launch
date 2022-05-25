@@ -5,20 +5,23 @@
     <arg name="left_cam_ns" value="/camera/left"/>
     <arg name="right_cam_ns" value="/camera/right"/>
     
-    <node required="true" pkg="tf2_ros" type="static_transform_publisher" name="tf_left_c1_baraja"
-          args="0.16 0.22 0.01 -1.1 0.01 -1.62 -1.62 hemisphere_1 left/camera_optical_link"/>
+    <arg name="left_calibration" value="$(find c1_fusion)/calibration/c1_left_20211122.yaml" />
+    <arg name="right_calibration" value="$(find c1_fusion)/calibration/c1_right_20211122_v2.yaml" />
 
-    <node required="true" pkg="tf2_ros" type="static_transform_publisher" name="tf_right_c1_baraja"
-          args="0.12 -0.19 0.05 -2.05 0.018 -1.625 hemisphere_2 right/camera_optical_link"/>
+    <node required="true" pkg="tf2_ros" type="static_transform_publisher" name="tf_left_c1_baraja"
+          args="0.2 0.19 0.01 -1.1425 -0.01 -1.594 hemisphere_1 left/camera_optical_link"/>
+
+    <node  required="true" pkg="tf2_ros" type="static_transform_publisher" name="tf_right_c1_baraja"
+          args="0.2 -0.19 0.01 -2.085 -0.01 -1.594 hemisphere_2 right/camera_optical_link"/>
 	  
     <group ns="$(arg left_cam_ns)">
       <node  required="true" pkg="image_proc" type="image_proc" name="image_proc_left"/>
-<!--      
+      
       <node  required="true" pkg="pe_camerainfo_publisher" type="pe_calibration_publisher.py" name="camera_info_left" output="screen">
         <param name="calibration_yaml" value="$(arg left_calibration)" />
         <param name="input_topic" value="image_raw" />
       </node>
--->      
+      
       <node  required="true" pkg="image_transport" type="republish" name="image_decompress_left" 
           args="compressed in:=image_raw raw out:=image_raw"/>
 
@@ -31,12 +34,12 @@
 
     <group ns="$(arg right_cam_ns)">
       <node  required="true" pkg="image_proc" type="image_proc" name="image_proc_right"/>
-<!--      
+      
       <node  required="true" pkg="pe_camerainfo_publisher" type="pe_calibration_publisher.py" name="camera_info_right" output="screen">
         <param name="calibration_yaml" value="$(arg right_calibration)" />
         <param name="input_topic" value="image_raw" />
       </node>
--->      
+      
       <node  required="true" pkg="image_transport" type="republish" name="image_decompress_right" 
           args="compressed in:=image_raw raw out:=image_raw"/>
 
@@ -52,12 +55,12 @@
 
     <node  required="true" name="rviz" pkg="rviz" type="rviz" output="screen" args="-d $(find rviz_cinematographer_gui)/launch/rviz_cinematographer_gui.rviz"/>
 
-
+<!--
     <node  required="true" name="rviz_cinematographer_gui" pkg="rqt_gui" type="rqt_gui" output="screen" args="-s rviz_cinematographer_gui/RvizCinematographerGUI">
         <rosparam command="load" file="$(find rviz_cinematographer_gui)/trajectories/c1_test.yaml"/>
-<!--        <param name="start_recorder" value="true"/> -->
+        <param name="start_recorder" value="true"/> 
     </node>
-
+-->
 
     <node  required="true" pkg="image_fullscreen_display" type="image_fullscreen_display.py" name="image_fullscreen_display" output="screen">
         <param name="input_topic" value="/image_final" />

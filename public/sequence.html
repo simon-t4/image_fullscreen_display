@@ -21,9 +21,9 @@
  
   
   var ros = new ROSLIB.Ros({
-//      url : 'ws://localhost:9090'
+      url : 'ws://localhost:9090'
 //      url : 'ws://192.168.0.13:9090'
-     url : 'ws://10.42.0.1:9090'
+//     url : 'ws://10.42.0.1:9090'
    });
 
   ros.on('connection', function() {
@@ -46,14 +46,18 @@
   var single_rviz_seq = new ROSLIB.Message({
       sequence_id : 0
   });
-  var single_depth_seq = new ROSLIB.Message({
+  var sequence_1_seq = new ROSLIB.Message({
+      sequence_id : 1
+  });
+  
+  var single_depth_left_seq = new ROSLIB.Message({
+      sequence_id : 2
+  });
+  var single_depth_right_seq = new ROSLIB.Message({
       sequence_id : 3
   });
   var single_intensity_seq = new ROSLIB.Message({
-      sequence_id : 2
-  });
-  var sequence_1_seq = new ROSLIB.Message({
-      sequence_id : 1
+      sequence_id : 4
   });
 
 
@@ -65,9 +69,13 @@
       console.log('Pushed multiple sequence button.');
       setSeq.publish(sequence_1_seq);
   };
-  function single_depth() {
-      console.log('Pushed single depth button.');
-      setSeq.publish(single_depth_seq);
+  function single_depth_left() {
+      console.log('Pushed single depth left button.');
+      setSeq.publish(single_depth_left_seq);
+  };
+  function single_depth_right() {
+      console.log('Pushed single depth right button.');
+      setSeq.publish(single_depth_right_seq);
   };
   function single_intensity() {
       console.log('Pushed single intensity button.');
@@ -124,8 +132,8 @@
       background-color: #CFE7E8;
       border: none;
       color: white;
-      padding: 35px 48px;
-      margin: 16px 2px;
+      padding: 30px 48px;
+      margin: 8px 2px;
       text-align: center;
       display: inline-block;
       font-size: 32px;
@@ -136,8 +144,8 @@
       background-color: #06579E;
       border: none;
       color: white;
-      padding: 35px 24px;
-      margin: 16px 2px;
+      padding: 30px 24px;
+      margin: 8px 2px;
       text-align: center;
       display: inline-block;
       font-size: 32px;
@@ -178,7 +186,7 @@
 <body>
 <div id ="imggame">
   <div class="image-wrap">
-  <img src="images/T4Logo.png" alt="Tier IV, Inc"
+  <img src="images/t4-new-blue.png" alt="Tier IV, Inc"
        style="height:135px;width:135px;">
   </div>
   <div class="desc">
@@ -189,14 +197,15 @@
 	      font-family:sans-serif;
 	      color:white;
 	      padding:35px 35px;">
-     CES 2022 Demo</p>
+     TierIV Sensor Fusion Demo</p>
   </div>
 </div class="clear"></div>
 </div>
 <!--  <p> Choose from set sequences </p>-->
   <div>
     <input type="button" class="mybutton" value="Single RViz View" id="btnClick" onClick="single_view();" /> <br>
-    <input type="button" class="mybutton" value="Single Depth View" id="btnClick" onClick="single_depth();" /><br>
+    <input type="button" class="mybutton" value="Single Depth View (Left)" id="btnClick" onClick="single_depth_left();" /><br>
+    <input type="button" class="mybutton" value="Single Depth View (Right)" id="btnClick" onClick="single_depth_right();" /><br>
     <input type="button" class="mybutton" value="Single Intensity View" id="btnClick" onClick="single_intensity();" /><br>
     <input type="button" class="mybutton" value="Multi View Sequence 1" id="btnClick" onClick="sequence_1();" /><br>
   </div>

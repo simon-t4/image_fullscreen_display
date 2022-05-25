@@ -103,6 +103,7 @@ class RoundWindow(QLabel):
         #self.qimage = QImage(self.wd, self.ht, QImage.Format_RGB32)
 
         qimage_tmp = QImage();
+        #qimage_tmp.load("/home/tier4/ces2022/ws/src/image_display/public/images/t4-new-white.png")
         qimage_tmp.load("/home/tier4/ces2022/data/images/tier4_blue.png")
         #qimage_tmp2 = qimage_tmp.scaled(self.wd, self.ht, Qt.KeepAspectRatio);
         qimage_tmp2 = qimage_tmp.scaled(self.wd, self.ht);
@@ -112,7 +113,7 @@ class RoundWindow(QLabel):
         self.move(self._monitor.left(), self._monitor.top())
         self.showFullScreen()
         self.show()
-    
+  
     def update(self):
         if self.qimage is not None and self.update_im:
             self.setPixmap(QtGui.QPixmap.fromImage(self.qimage))
